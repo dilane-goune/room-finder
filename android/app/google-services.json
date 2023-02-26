@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "110155031149",
+    "project_id": "room-finder-54b9e",
+    "storage_bucket": "room-finder-54b9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110155031149:android:1d2aa9dbea0a0500ced564",
+        "android_client_info": {
+          "package_name": "com.gouneanlab.room_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110155031149-njca3n48amd3t1j1t9oujpalot7fasd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmxNqmzIWrD6Vi9l_yWCIX6WPXDX14ORM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110155031149-4ru5blqi21ok2mhucf2lh0hl5lmmavjp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

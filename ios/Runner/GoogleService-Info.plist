@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>110155031149-nh2i6e475v0ovhk20fks380ae98lf7cq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.110155031149-nh2i6e475v0ovhk20fks380ae98lf7cq</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCC8krbK-xYO3cwgWqlluTmnLVEcUnVkps</string>
+	<key>GCM_SENDER_ID</key>
+	<string>110155031149</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.gouneanlab.roomyFinder</string>
+	<key>PROJECT_ID</key>
+	<string>room-finder-54b9e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>room-finder-54b9e.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:110155031149:ios:d7614faf8a90b14dced564</string>
+</dict>
+</plist>
