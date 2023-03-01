@@ -67,6 +67,7 @@ class FindPropertiesAdsScreen extends StatelessWidget {
       onRefresh: controller._fetchData,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
           title: Text("properpyAds".tr),
         ),
         body: Obx(() {

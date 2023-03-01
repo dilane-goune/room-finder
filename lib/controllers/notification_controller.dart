@@ -51,15 +51,15 @@ class NotificationController {
     }
   }
 
-  static Future<bool> get _canShowNotification async {
-    try {
-      final pref = await SharedPreferences.getInstance();
-      if (pref.getBool("allowPushNotifications") == false) return false;
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
+  // static Future<bool> get _canShowNotification async {
+  //   try {
+  //     final pref = await SharedPreferences.getInstance();
+  //     if (pref.getBool("allowPushNotifications") == false) return false;
+  //     return true;
+  //   } catch (_) {
+  //     return false;
+  //   }
+  // }
 
   static Future<void> _saveNotification(String event, String message) async {
     try {
@@ -129,14 +129,13 @@ class NotificationController {
       case "auto-reply":
       case "booking-offered":
       case "booking-declined":
-        final message = msg.data["message"] ??
-            msg.data["message"] ??
-            "Your booking to ${msg.data["ad"]} been decline by the ownner";
+      case "booking-cancelled":
+        final message = msg.data["message"] ?? "new notification";
 
         if (msg.data["event"] != null) {
           _saveNotification(msg.data["event"], message);
         }
-        if (!await _canShowNotification) return;
+
         AwesomeNotifications().createNotification(
           content: _createContent(
             title: "Booking".tr,
@@ -151,7 +150,6 @@ class NotificationController {
           _saveNotification(msg.data["message"], message);
         }
 
-        if (!await _canShowNotification) return;
         AwesomeNotifications().createNotification(
           content: _createContent(
             title: "Contracts/Deals".tr,
@@ -177,24 +175,18 @@ class NotificationController {
           conv.newMessageFromContent(message.content, false);
           conv.saveChat();
           ChatConversation.addUserConversationKeyToStorage(conv.key);
+
+          AwesomeNotifications().createNotification(
+            content: _createContent(
+              title: message.sender.fullName,
+              body: message.content,
+            ),
+          );
         } catch (_) {}
 
         break;
       default:
         break;
-    }
-  }
-
-  static Future<void> sendMessageNotification(RemoteMessage message) async {
-    try {
-      if (!await _canShowNotification) return;
-      final msg = Message.fromJson(message.data["jsonMessage"]);
-
-      AwesomeNotifications().createNotification(
-        content: _createContent(title: msg.sender.fullName, body: msg.content),
-      );
-    } catch (e) {
-      Get.log("NoticationController :: Error -> $e");
     }
   }
 }

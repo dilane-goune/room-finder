@@ -34,7 +34,7 @@ class PostAdScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   ...[
                     if (AppController.me.isLandlord) AdType.property,
-                    AdType.roommate,
+                    AdType.roommateMatch,
                     AdType.roommatePremium,
                   ].map((e) {
                     final String label;
@@ -42,8 +42,8 @@ class PostAdScreen extends StatelessWidget {
                       case AdType.property:
                         label = 'Property Ad';
                         break;
-                      case AdType.roommate:
-                        label = 'Roommate Match'.tr;
+                      case AdType.roommateMatch:
+                        label = 'Roommate Match registration'.tr;
                         break;
                       case AdType.roommatePremium:
                         label = 'Premium Roommate Ad'.tr;
@@ -104,7 +104,7 @@ class PostAdScreen extends StatelessWidget {
                 case AdType.property:
                   Get.to(() => const PostPropertyAdScreen());
                   break;
-                case AdType.roommate:
+                case AdType.roommateMatch:
                   Get.to(() => const PostRoomateAdScreen(isPremium: false));
                   break;
                 case AdType.roommatePremium:

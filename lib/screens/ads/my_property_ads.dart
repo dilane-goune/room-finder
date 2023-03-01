@@ -55,7 +55,10 @@ class MyPropertyAdsScreen extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: controller._fetchData,
       child: Scaffold(
-        appBar: AppBar(title: Text("My Ads".tr)),
+        appBar: AppBar(
+          title: Text("My Ads".tr),
+          backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
+        ),
         body: Obx(() {
           if (controller.isLoading.isTrue) {
             return const Center(child: CupertinoActivityIndicator());

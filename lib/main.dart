@@ -14,6 +14,8 @@ import 'package:room_finder/controllers/notification_controller.dart';
 import 'package:room_finder/firebase_options.dart';
 import 'package:room_finder/functions/dynamic_link_handler.dart';
 import 'package:room_finder/localization/messages.dart';
+import 'package:room_finder/screens/ads/my_property_ads.dart';
+import 'package:room_finder/screens/ads/my_roommate_ads.dart';
 import 'package:room_finder/screens/home/home.dart';
 import 'package:room_finder/screens/start/login.dart';
 import 'package:room_finder/screens/start/reset_password.dart';
@@ -38,10 +40,15 @@ void main() async {
   FirebaseAnalytics.instance.logAppOpen();
 
   // Firebase Cloud Messaging
+  FirebaseMessaging.instance.getToken();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessage.listen((msg) {
     NotificationController.firebaseMessagingHandler(msg);
-    AppController.instance.haveNewNotification(true);
+    if (msg.data["event"] == "new-message") {
+      AppController.instance.haveNewMessage(true);
+    } else {
+      AppController.instance.haveNewNotification(true);
+    }
   });
 
   // Dynamic link
@@ -120,8 +127,14 @@ class MyApp extends StatelessWidget {
         errorMaxLines: 3,
       ),
       fontFamily: 'Roboto',
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromRGBO(255, 123, 77, 1),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 22),
+        iconTheme: IconThemeData(color: Colors.white),
+        actionsIconTheme: IconThemeData(color: Colors.white),
+      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
+        // backgroundColor: Color.fromRGBO(255, 123, 77, 1),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
@@ -151,13 +164,11 @@ class MyApp extends StatelessWidget {
       primarySwatch: Colors.purple,
       useMaterial3: true,
       scaffoldBackgroundColor: const Color.fromARGB(255, 19, 51, 77),
-      appBarTheme: AppBarTheme(
-        backgroundColor: const Color.fromARGB(255, 15, 54, 87),
-        titleTextStyle: TextStyle(
-          color: Colors.white.withOpacity(0.6),
-          fontSize: 22,
-        ),
-        iconTheme: IconThemeData(color: Colors.white.withOpacity(0.6)),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromRGBO(255, 123, 77, 1),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 22),
+        iconTheme: IconThemeData(color: Colors.white),
+        actionsIconTheme: IconThemeData(color: Colors.white),
         // centerTitle: true,
       ),
       // cardTheme: const CardTheme(color: Color.fromARGB(255, 1, 39, 70)),
@@ -180,7 +191,7 @@ class MyApp extends StatelessWidget {
         errorMaxLines: 3,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromARGB(255, 15, 54, 87),
+        // backgroundColor: Color.fromRGBO(255, 123, 77, 1),
         elevation: 3,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
@@ -254,6 +265,14 @@ class MyApp extends StatelessWidget {
           name: "/home",
           page: () => const Home(),
         ),
+        GetPage(
+          name: "/my-property-ads",
+          page: () => const MyPropertyAdsScreen(),
+        ),
+        GetPage(
+          name: "/my-roommate-ads",
+          page: () => const MyRoommateAdsScreen(),
+        ),
       ],
     );
   }
@@ -262,8 +281,6 @@ class MyApp extends StatelessWidget {
 // Declared as global, outside of any class
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  if (message.data["event"] == "new-message") {
-    NotificationController.sendMessageNotification(message);
-  }
+
   NotificationController.firebaseMessagingHandler(message);
 }

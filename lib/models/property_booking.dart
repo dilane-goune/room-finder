@@ -37,6 +37,7 @@ class PropertyBooking {
 
   bool get isMine => poster.isMe;
   bool get isOffered => status == 'offered';
+  bool get isPending => status == 'pending';
   num get budget {
     switch (rentType) {
       case "Monthly":

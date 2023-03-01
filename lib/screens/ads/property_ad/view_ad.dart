@@ -265,6 +265,15 @@ class _VewPropertyController extends LoadingController {
       isLoading(false);
     }
   }
+
+  void _viewImage(String source) {
+    showModalBottomSheet(
+      context: Get.context!,
+      builder: (context) {
+        return Image.network(source);
+      },
+    );
+  }
 }
 
 class ViewPropertyAd extends StatelessWidget {
@@ -274,9 +283,13 @@ class ViewPropertyAd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     final controller = Get.put(_VewPropertyController(ad));
     return Scaffold(
-      appBar: AppBar(title: const Text("Looking for properties")),
+      appBar: AppBar(
+        title: const Text("Looking for properties"),
+        backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -365,25 +378,25 @@ class ViewPropertyAd extends StatelessWidget {
                     shrinkWrap: true,
                     childAspectRatio: 2.5,
                     children: [
-                      PrpertyAdOverviewItemWidget(
+                      PropertyAdOverviewItemWidget(
                         icon: const Icon(Icons.group),
-                        label: "People in the ${ad.type.toLowerCase()}",
+                        label: "Number of people",
                         value:
                             "${ad.socialPreferences["numberOfPeople"]} peoples",
                       ),
-                      PrpertyAdOverviewItemWidget(
+                      PropertyAdOverviewItemWidget(
                         icon: const Icon(Icons.smoking_rooms_rounded),
                         label: "Smoking",
                         value: ad.socialPreferences["smoking"] == true
                             ? "Allowed"
                             : "Not allowed",
                       ),
-                      PrpertyAdOverviewItemWidget(
+                      PropertyAdOverviewItemWidget(
                         icon: const Icon(Icons.public),
                         label: "Nationality preferred",
                         value: "${ad.socialPreferences["nationality"]}",
                       ),
-                      PrpertyAdOverviewItemWidget(
+                      PropertyAdOverviewItemWidget(
                         icon: Icon(ad.socialPreferences["drinking"] == true
                             ? Icons.local_drink_sharp
                             : Icons.no_drinks),
@@ -392,14 +405,14 @@ class ViewPropertyAd extends StatelessWidget {
                             ? "Allowed"
                             : "Not allowed",
                       ),
-                      PrpertyAdOverviewItemWidget(
+                      PropertyAdOverviewItemWidget(
                         icon: Icon(ad.socialPreferences["gender"] == "Male"
                             ? Icons.male
                             : Icons.female),
                         label: "Gender preferred",
                         value: "${ad.socialPreferences["gender"]}",
                       ),
-                      PrpertyAdOverviewItemWidget(
+                      PropertyAdOverviewItemWidget(
                         icon: const Icon(Icons.family_restroom),
                         label: "Visitors",
                         value: ad.socialPreferences["visitors"] == true
@@ -445,37 +458,46 @@ class ViewPropertyAd extends StatelessWidget {
                     }).toList(),
                   ),
                   const SizedBox(height: 20),
-                  ...ad.images.map(
-                    (e) => Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 2.5,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.network(
-                          e,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (ctx, e, trace) {
-                            return const SizedBox(
-                              width: double.infinity,
-                              height: 150,
-                              child: Icon(
-                                Icons.broken_image,
-                                size: 50,
+                  const Text("Images", style: TextStyle(fontSize: 14)),
+                  GridView.count(
+                    crossAxisCount: screenWidth > 370 ? 4 : 2,
+                    crossAxisSpacing: 10,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: ad.images
+                        .map(
+                          (e) => GestureDetector(
+                            onTap: () => controller._viewImage(e),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 2.5),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  e,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (ctx, e, trace) {
+                                    return const SizedBox(
+                                      width: double.infinity,
+                                      height: 150,
+                                      child: Icon(
+                                        Icons.broken_image,
+                                        size: 50,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
                   const Divider(height: 20),
-                  if (!ad.isMine) ...[
-                    const Text("Booking", style: TextStyle(fontSize: 14)),
-                    const SizedBox(height: 5),
-                  ],
                   if (!ad.isMine) ...[
                     const Text(
                       "Booking",

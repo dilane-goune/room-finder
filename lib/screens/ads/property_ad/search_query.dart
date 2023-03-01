@@ -81,6 +81,7 @@ class PropertyAdSearchQueryScreen extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Looking for Properties"),
+          backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
         ),
         body: Padding(
           padding: const EdgeInsets.only(
@@ -246,52 +247,62 @@ class PropertyAdSearchQueryScreen extends StatelessWidget {
             if (MediaQuery.of(context).viewInsets.bottom > 50) {
               return const SizedBox();
             }
+            final progress = controller._pageIndex.value.toDouble() + 1;
 
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                // const SizedBox(width: 10),
-                TextButton(
-                  onPressed: () {
-                    if (controller._pageIndex.value == 0) {
-                      Get.back();
-                    } else {
-                      controller._moveToPreviousPage();
-                    }
-                  },
-                  // icon: const Icon(Icons.arrow_left),
-                  child: controller._pageIndex.value == 0
-                      ? Text("back".tr)
-                      : Text("previous".tr),
+                LinearProgressIndicator(
+                  color: const Color.fromRGBO(96, 15, 116, 1),
+                  value: progress / 2,
                 ),
-                Text('${controller._pageIndex.value + 1}/2'),
-                TextButton(
-                  onPressed: () {
-                    switch (controller._pageIndex.value) {
-                      case 0:
-                        controller._moveToNextPage();
-                        break;
-                      case 1:
-                        if (controller.location.isNotEmpty) {
-                          Get.to(
-                            () => FindPropertiesAdsScreen(
-                              city: controller.city.value,
-                              location: controller.location.value,
-                            ),
-                          );
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () {
+                        if (controller._pageIndex.value == 0) {
+                          Get.back();
                         } else {
-                          showToast('Area is required');
+                          controller._moveToPreviousPage();
                         }
-                        break;
+                      },
+                      // icon: const Icon(Icons.arrow_left),
+                      child: controller._pageIndex.value == 0
+                          ? Text("back".tr)
+                          : Text("previous".tr),
+                    ),
+                    // Text('${controller._pageIndex.value + 1}/2'),
+                    TextButton(
+                      onPressed: () {
+                        switch (controller._pageIndex.value) {
+                          case 0:
+                            controller._moveToNextPage();
+                            break;
+                          case 1:
+                            if (controller.location.isNotEmpty) {
+                              Get.to(
+                                () => FindPropertiesAdsScreen(
+                                  city: controller.city.value,
+                                  location: controller.location.value,
+                                ),
+                              );
+                            } else {
+                              showToast('Area is required');
+                            }
+                            break;
 
-                      default:
-                    }
-                  },
-                  child: controller._pageIndex.value == 6
-                      ? Text("save".tr)
-                      : Text("next".tr),
+                          default:
+                        }
+                      },
+                      child: controller._pageIndex.value == 6
+                          ? Text("save".tr)
+                          : Text("next".tr),
+                    ),
+                    // const Icon(Icons.arrow_right),
+                  ],
                 ),
-                // const Icon(Icons.arrow_right),
               ],
             );
           }),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:room_finder/classes/api_service.dart';
 import 'package:room_finder/components/get_more_button.dart';
 import 'package:room_finder/controllers/app_controller.dart';
 import 'package:room_finder/controllers/loadinding_controller.dart';
-import 'package:room_finder/functions/utility.dart';
 import 'package:room_finder/models/roommate_ad.dart';
 import 'package:room_finder/screens/ads/roomate_ad/deposit_screen.dart';
 import 'package:room_finder/screens/ads/roomate_ad/view_ad.dart';
@@ -183,7 +183,7 @@ class RoommateMatchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).appBarTheme.backgroundColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       elevation: 2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +194,7 @@ class RoommateMatchWidget extends StatelessWidget {
               top: Radius.circular(10),
             ),
             child: Image.network(
-              ad.poster.profilePicture,
+              ad.images[0],
               width: double.infinity,
               height: 150,
               fit: BoxFit.cover,
@@ -253,6 +253,7 @@ class RoommateMatchWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text("Budget"),
@@ -264,11 +265,12 @@ class RoommateMatchWidget extends StatelessWidget {
                 ),
                 const Spacer(),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text("Moving date"),
                     Text(
-                      relativeTimeText(ad.movingDate),
+                      Jiffy(ad.movingDate).yMMMEd,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

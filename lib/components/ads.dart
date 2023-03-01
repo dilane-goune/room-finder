@@ -15,7 +15,7 @@ class PropertyAdWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Theme.of(context).appBarTheme.backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         elevation: 2,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -114,8 +114,8 @@ class PropertyAdWidget extends StatelessWidget {
   }
 }
 
-class PrpertyAdOverviewItemWidget extends StatelessWidget {
-  const PrpertyAdOverviewItemWidget({
+class PropertyAdOverviewItemWidget extends StatelessWidget {
+  const PropertyAdOverviewItemWidget({
     super.key,
     required this.icon,
     required this.label,
@@ -128,7 +128,6 @@ class PrpertyAdOverviewItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).appBarTheme.backgroundColor,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(5),
@@ -172,7 +171,7 @@ class RoommateAdWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Theme.of(context).appBarTheme.backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         elevation: 2,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +182,7 @@ class RoommateAdWidget extends StatelessWidget {
                 top: Radius.circular(10),
               ),
               child: Image.network(
-                ad.poster.profilePicture,
+                ad.images.isNotEmpty ? ad.images[0] : ad.poster.profilePicture,
                 width: double.infinity,
                 height: 150,
                 fit: BoxFit.cover,

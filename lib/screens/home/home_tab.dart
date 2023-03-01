@@ -11,7 +11,7 @@ import 'package:room_finder/functions/utility.dart';
 import 'package:room_finder/screens/ads/post_ad.dart';
 import 'package:room_finder/screens/ads/property_ad/search_query.dart';
 import 'package:room_finder/screens/ads/roomate_ad/premium_roommates_ads.dart';
-import 'package:room_finder/screens/ads/roomate_ad/search_query.dart';
+import 'package:room_finder/screens/ads/roomate_ad/search_roommate_match.dart';
 import 'package:room_finder/screens/user/upgrade_plan.dart';
 
 class _HomeTabController extends LoadingController {
@@ -51,8 +51,7 @@ class HomeTab extends StatelessWidget implements HomeScreenSupportable {
                   assetImage: "assets/images/premium_roommate.png",
                   onTap: () async {
                     if (AppController.me.isPremium) {
-                      Get.to(() =>
-                          const RoommateAdSearchQueryScreen(isPremium: true));
+                      Get.to(() => const PremiumRoommatesAdsScreen());
                     } else {
                       final upgrade = await showConfirmDialog(
                           "Only premium members can see premium ADs."
@@ -77,7 +76,7 @@ class HomeTab extends StatelessWidget implements HomeScreenSupportable {
                   label: "Looking for Roommate Match".tr,
                   assetImage: "assets/images/premium_roommate.png",
                   onTap: () {
-                    Get.to(() => const RoommateAdSearchQueryScreen());
+                    Get.to(() => const SearchRoommateMatchScreen());
                   },
                 ),
               ],
@@ -124,8 +123,8 @@ class HomeTab extends StatelessWidget implements HomeScreenSupportable {
   AppBar get appBar {
     final controller = Get.put(_HomeTabController());
     return AppBar(
+      backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.purple,
       title: SizedBox(
         width: Get.width,
         child: Builder(builder: (context) {
@@ -259,6 +258,23 @@ class HomeUserInfo extends StatelessWidget {
                         Expanded(
                           child: Text(
                             AppController.me.country,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(CupertinoIcons.person_alt_circle_fill),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            AppController.me.type.replaceFirst(
+                              AppController.me.type[0],
+                              AppController.me.type[0].toUpperCase(),
+                            ),
                             style: const TextStyle(fontSize: 14),
                           ),
                         ),

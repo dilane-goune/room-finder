@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:room_finder/classes/app_notification.dart';
+import 'package:room_finder/controllers/app_controller.dart';
 import 'package:room_finder/functions/dialogs_bottom_sheets.dart';
 
 import 'package:room_finder/functions/utility.dart';
@@ -16,6 +17,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     super.initState();
+    AppController.instance.haveNewNotification(false);
   }
 
   @override
@@ -23,6 +25,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notifications"),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() {}),
+            icon: const Icon(Icons.refresh),
+          )
+        ],
       ),
       body: FutureBuilder(
         builder: (ctx, asp) {
@@ -71,7 +79,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                   await AppNotication.deleteNotifications(n);
                                   setState(() {});
                                 },
-                                child: const Text("Delete"),
+                                child: const Text("Delete Notification"),
                               ),
                             )
                           ],

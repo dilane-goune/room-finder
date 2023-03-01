@@ -27,6 +27,7 @@ class FavoriteTab extends StatelessWidget implements HomeScreenSupportable {
   @override
   AppBar get appBar {
     return AppBar(
+      backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
       automaticallyImplyLeading: false,
       title: const Text('Favorites'),
       centerTitle: false,

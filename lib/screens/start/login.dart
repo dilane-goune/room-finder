@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:room_finder/classes/api_service.dart';
 import 'package:room_finder/classes/app_notification.dart';
-import 'package:room_finder/components/custom_appbar.dart';
 import 'package:room_finder/controllers/app_controller.dart';
 import 'package:room_finder/classes/exceptions.dart';
 import 'package:room_finder/controllers/loadinding_controller.dart';
@@ -60,7 +59,12 @@ class _LoginController extends LoadingController {
         case 403:
           if (res.data["code"] == "diabled") {
             showGetSnackbar(
-              "accountDisabledPleaseContactTheHelpCenter".tr,
+              "Account disabled. Please contactact the support team".tr,
+              severity: Severity.error,
+            );
+          } else {
+            showGetSnackbar(
+              "Incorrect credentials".tr,
               severity: Severity.error,
             );
           }
@@ -110,103 +114,111 @@ class LoginScreen extends StatelessWidget {
     final controller = Get.put(_LoginController());
     return Obx(() {
       return Scaffold(
-        appBar: createNamedAppBar(
-          title: 'login'.tr,
-          isLoading: controller.isLoading.isTrue,
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Login"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SingleChildScrollView(
-            child: Form(
-              key: controller.formkey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Text('email'.tr),
-                  TextFormField(
-                    controller: controller._emailController,
-                    decoration: InputDecoration(
-                      suffixIcon: const Icon(CupertinoIcons.mail),
-                      hintText: "emailAddress".tr,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'thisFieldIsRequired'.tr;
-                      }
-
-                      if (!value.isEmail) return 'invalidEmail'.tr;
-
-                      return null;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 10),
-                  Text('password'.tr),
-                  TextFormField(
-                    obscureText: controller.showPassword.isFalse,
-                    controller: controller._passwordController,
-                    decoration: InputDecoration(
-                      hintText: "enterYourPassword".tr,
-                      suffixIcon: IconButton(
-                        onPressed: controller.showPassword.toggle,
-                        icon: controller.showPassword.isTrue
-                            ? const Icon(CupertinoIcons.eye_slash_fill)
-                            : const Icon(CupertinoIcons.eye_fill),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'thisFieldIsRequired'.tr;
-                      }
-
-                      return null;
-                    },
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
+        body: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: controller.formkey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("rememberMe".tr),
-                      Checkbox(
-                        value: controller.rememberMe.isTrue,
-                        onChanged: controller.isLoading.isTrue
-                            ? null
-                            : (_) => controller.rememberMe.toggle(),
+                      const SizedBox(height: 20),
+                      Text('email'.tr),
+                      TextFormField(
+                        controller: controller._emailController,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(CupertinoIcons.mail),
+                          hintText: "emailAddress".tr,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'thisFieldIsRequired'.tr;
+                          }
+
+                          if (!value.isEmail) return 'invalidEmail'.tr;
+
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () => Get.toNamed('/reset_password'),
-                        child: Text('forgotPassword'.tr),
-                      )
+                      const SizedBox(height: 10),
+                      Text('password'.tr),
+                      TextFormField(
+                        obscureText: controller.showPassword.isFalse,
+                        controller: controller._passwordController,
+                        decoration: InputDecoration(
+                          hintText: "enterYourPassword".tr,
+                          suffixIcon: IconButton(
+                            onPressed: controller.showPassword.toggle,
+                            icon: controller.showPassword.isTrue
+                                ? const Icon(CupertinoIcons.eye_slash_fill)
+                                : const Icon(CupertinoIcons.eye_fill),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'thisFieldIsRequired'.tr;
+                          }
+
+                          return null;
+                        },
+                        keyboardType: TextInputType.visiblePassword,
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text("rememberMe".tr),
+                          Checkbox(
+                            value: controller.rememberMe.isTrue,
+                            onChanged: controller.isLoading.isTrue
+                                ? null
+                                : (_) => controller.rememberMe.toggle(),
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () => Get.toNamed('/reset_password'),
+                            child: Text('forgotPassword'.tr),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 60),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: controller.isLoading.isTrue
+                              ? null
+                              : controller._login,
+                          child: Text("login".tr),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("dontHaveAnAccount".tr),
+                          TextButton(
+                            onPressed: () =>
+                                Get.to(() => const RegistrationScreen()),
+                            child: Text('registration'.tr),
+                          )
+                        ],
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 60),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: controller.isLoading.isTrue
-                          ? null
-                          : controller._login,
-                      child: Text("login".tr),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("dontHaveAnAccount".tr),
-                      TextButton(
-                        onPressed: () =>
-                            Get.to(() => const RegistrationScreen()),
-                        child: Text('registration'.tr),
-                      )
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
+            if (controller.isLoading.isTrue)
+              const LinearProgressIndicator(
+                color: Color.fromRGBO(96, 15, 116, 1),
+              ),
+          ],
         ),
       );
     });

@@ -72,6 +72,7 @@ class _ChatController extends GetxController {
         conversation.newMessageFromContent(newMessageController.text, true);
         newMessageController.clear();
         update();
+        conversation.saveChat();
       } else {
         showToast("Failed to send message");
       }
