@@ -12,8 +12,6 @@ import 'package:room_finder/models/message.dart';
 import 'package:room_finder/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final _random = Random();
-
 class NotificationController {
   /// Use this method to detect when a new
   /// notification or a schedule is created
@@ -170,7 +168,7 @@ class NotificationController {
           final conv = (await ChatConversation.getSavedChat(
                   ChatConversation.createConvsertionKey(
                       user.id, message.sender.id))) ??
-              ChatConversation.newConversation(friend: user);
+              ChatConversation.newConversation(friend: message.sender);
 
           conv.newMessageFromContent(message.content, false);
           conv.saveChat();
@@ -197,11 +195,28 @@ NotificationContent _createContent({
   Map<String, String?>? payload,
 }) {
   return NotificationContent(
-    id: _random.nextInt(1000),
+    id: Random().nextInt(1000),
     channelKey: "notification_channel",
+    groupKey: "notification_channel_group",
     title: title,
     body: body,
     payload: payload,
-    notificationLayout: NotificationLayout.BigText,
+    notificationLayout: NotificationLayout.Default,
   );
 }
+
+// NotificationContent _createMessageContent({
+//   String? title,
+//   String? body,
+//   Map<String, String?>? payload,
+// }) {
+//   return NotificationContent(
+//     id: Random().nextInt(1000),
+//     channelKey: "message_notification_channel",
+//     groupKey: "notification_message_group",
+//     title: title,
+//     body: body,
+//     payload: payload,
+//     notificationLayout: NotificationLayout.Messaging,
+//   );
+// }

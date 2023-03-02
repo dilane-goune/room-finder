@@ -71,21 +71,21 @@ void main() async {
     'resource://drawable/launcher_icon',
     [
       NotificationChannel(
-        channelGroupKey: 'basic_channel_group',
+        channelGroupKey: 'notification_channel_group',
         channelKey: 'notification_channel',
-        channelName: 'Basic notifications',
+        channelName: 'basic_notifications',
         channelDescription: 'Room Finder default notification channel',
         defaultColor: Colors.purple,
         importance: NotificationImportance.High,
         channelShowBadge: true,
         ledColor: Colors.purple,
-      )
+      ),
     ],
     channelGroups: [
       NotificationChannelGroup(
         channelGroupKey: 'notification_channel_group',
         channelGroupName: 'Notification Group',
-      )
+      ),
     ],
     debug: true,
   );

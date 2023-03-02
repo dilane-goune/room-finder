@@ -83,11 +83,10 @@ class ApiService {
     return res.data["exist"] as bool;
   }
 
-  static Future<String?> getUserProfilePictue(String userId) async {
+  static Future<Map<String, dynamic>?> getUserInfo(String userId) async {
     final dio = ApiService.getDio;
-    final res =
-        await dio.get('$API_URL/profile//profile-picture?userId=$userId');
-    if (res.statusCode == 200) return res.data["profilePicture"].toString();
+    final res = await dio.get('$API_URL/profile//profile-info?userId=$userId');
+    if (res.statusCode == 200) return res.data as Map<String, dynamic>?;
     return null;
   }
 }

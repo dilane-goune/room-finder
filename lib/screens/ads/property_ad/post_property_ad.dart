@@ -124,11 +124,16 @@ class _PostPropertyAdController extends LoadingController {
       information["weeklyPrice"] = oldData!.weeklyPrice.toString();
       information["dailyPrice"] = oldData!.dailyPrice.toString();
       information["deposit"] = oldData!.deposit;
-      information["depositPrice"] = oldData!.depositPrice.toString();
+      if (oldData!.depositPrice != null && oldData!.deposit == true) {
+        information["depositPrice"] = oldData!.depositPrice.toString();
+      }
       information["description"] = oldData!.description;
       information["posterType"] = oldData!.posterType;
 
-      address["location"] = oldData!.address["location"].toString();
+      _cityController.text =
+          address["city"] = oldData!.address["city"].toString();
+      _locationController.text =
+          address["location"] = oldData!.address["location"].toString();
       address["buildingName"] = oldData!.address["buildingName"].toString();
       address["floorNumber"] = oldData!.address["floorNumber"].toString();
       amenties.value = oldData!.amenties;

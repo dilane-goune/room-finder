@@ -7,8 +7,7 @@ import 'package:room_finder/controllers/loadinding_controller.dart';
 import 'package:room_finder/screens/ads/my_property_ads.dart';
 import 'package:room_finder/screens/ads/my_roommate_ads.dart';
 import 'package:room_finder/screens/booking/my_bookings.dart';
-import 'package:room_finder/screens/home/home_tab.dart';
-import 'package:room_finder/screens/user/view_pdf.dart';
+import 'package:room_finder/screens/user/about.dart';
 import 'package:room_finder/screens/user/view_user.dart';
 
 class _AccountTabController extends LoadingController {
@@ -48,7 +47,7 @@ class AccountTab extends StatelessWidget implements HomeScreenSupportable {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const HomeUserInfo(),
+            // const HomeUserInfo(),
             const SizedBox(height: 10),
             Card(
               child: ListTile(
@@ -108,57 +107,16 @@ class AccountTab extends StatelessWidget implements HomeScreenSupportable {
                 ),
               ),
             ),
-            const Divider(height: 30),
             Card(
               child: ListTile(
                 onTap: () {
-                  Get.to(() => const ViewPdfScreen(
-                        title: "Privacy policy",
-                        asset: "assets/pdf/privacy-policy.pdf",
-                      ));
+                  Get.to(() => const AboutScreeen());
                 },
-                leading: const Icon(Icons.privacy_tip),
-                title: const Text('Privacy policy'),
+                leading: const CircleAvatar(child: Icon(Icons.info_outlined)),
+                title: const Text('About'),
                 trailing: const IconButton(
                   onPressed: null,
                   icon: Icon(Icons.chevron_right),
-                ),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                onTap: () {
-                  Get.to(() => const ViewPdfScreen(
-                        title: "Terms and conditions",
-                        asset: "assets/pdf/terms-and-conditions.pdf",
-                      ));
-                },
-                leading: const Icon(Icons.verified_user_rounded),
-                title: const Text('Terms and conditions'),
-                trailing: const IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.chevron_right),
-                ),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                onTap: () => Get.to(() => const MyBookingsCreen()),
-                leading: const Icon(Icons.support_agent),
-                title: const Text('Contact us'),
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.chevron_right),
-                ),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.question_answer),
-                title: const Text('FAQ'),
-                trailing: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.chevron_right),
                 ),
               ),
             ),

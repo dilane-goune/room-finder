@@ -595,6 +595,36 @@ class ViewPropertyAd extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            const Divider(),
+                            Row(
+                              children: [
+                                Text(
+                                  "Quantity : ${controller.quantity} "
+                                  "${controller.ad.type}",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                  onPressed: controller.quantity <= 1
+                                      ? null
+                                      : () => controller.quantity(
+                                          controller.quantity.value - 1),
+                                  icon: const Icon(Icons.remove_outlined),
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  onPressed: controller.quantity >=
+                                          (controller.ad.quantity -
+                                              controller.ad.quantityTaken)
+                                      ? null
+                                      : () => controller.quantity(
+                                          controller.quantity.value + 1),
+                                  icon: const Icon(Icons.add_outlined),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       );

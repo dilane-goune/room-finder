@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:room_finder/classes/app_locale.dart';
 import 'package:room_finder/classes/app_notification.dart';
+import 'package:room_finder/models/app_version.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:room_finder/models/user.dart';
@@ -26,6 +27,8 @@ class AppController extends GetxController {
 
   final RxBool haveNewMessage = false.obs;
   final RxBool haveNewNotification = false.obs;
+
+  static AppVersion? updateVersion;
 
   Future<void> initRequired() async {
     // User

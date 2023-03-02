@@ -7,6 +7,7 @@ import 'package:room_finder/classes/api_service.dart';
 import 'package:room_finder/controllers/app_controller.dart';
 
 import 'package:room_finder/classes/chat_conversation.dart';
+import 'package:room_finder/functions/dialogs_bottom_sheets.dart';
 import 'package:room_finder/functions/snackbar_toast.dart';
 import 'package:room_finder/functions/utility.dart';
 import 'package:room_finder/models/message.dart';
@@ -21,7 +22,7 @@ class _ChatController extends GetxController {
 
   @override
   void onInit() {
-    conversation.updateProfilePictures();
+    conversation.updateChatInfo();
     super.onInit();
 
     FirebaseMessaging.onMessage.asBroadcastStream().listen((event) {
@@ -33,8 +34,11 @@ class _ChatController extends GetxController {
           final key = ChatConversation.createConvsertionKey(
               conversation.me.id, msg.sender.id);
           if (key == conversation.key) {
-            conversation.newMessage(msg);
+            conversation.newMessageFromContent(msg.content, false);
+            conversation.saveChat();
           }
+
+          AppController.instance.haveNewMessage(false);
 
           update();
         } catch (e) {
@@ -48,6 +52,18 @@ class _ChatController extends GetxController {
   void onClose() {
     newMessageController.dispose();
     super.onClose();
+  }
+
+  Future<void> clearChat() async {
+    final shouldClear = await showConfirmDialog(
+      "Do you really want to clear the conversation?",
+    );
+
+    if (shouldClear == true) {
+      conversation.messages.clear();
+      conversation.saveChat();
+      update();
+    }
   }
 
   Future<void> sendMessage() async {
@@ -64,7 +80,7 @@ class _ChatController extends GetxController {
         '/messages',
         data: {
           "message": message.toMap(),
-          "reciverFcmToken": conversation.friend.fcmToken,
+          "reciverId": conversation.friend.id,
         },
       );
 
@@ -73,6 +89,8 @@ class _ChatController extends GetxController {
         newMessageController.clear();
         update();
         conversation.saveChat();
+      } else if (res.statusCode == 404) {
+        showToast("Failed to send message, Reciever account not found");
       } else {
         showToast("Failed to send message");
       }
@@ -96,6 +114,14 @@ class ChatScreen extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           title: Text("Chat with ${conversation.friend.firstName}"),
+          actions: [
+            IconButton(
+              onPressed: controller.conversation.messages.isEmpty
+                  ? null
+                  : controller.clearChat,
+              icon: const Icon(Icons.delete_sweep),
+            )
+          ],
         ),
         body: GetBuilder<_ChatController>(
           builder: (controller) {
@@ -210,7 +236,7 @@ class ChatScreen extends StatelessWidget {
                     ? const CupertinoActivityIndicator()
                     : const Icon(Icons.send),
               ),
-              hintText: 'newMessage'.tr,
+              hintText: 'New message'.tr,
             ),
             minLines: 1,
             maxLines: 6,

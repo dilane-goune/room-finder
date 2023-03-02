@@ -56,7 +56,7 @@ class MyPropertyAdsScreen extends StatelessWidget {
       onRefresh: controller._fetchData,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("My Ads".tr),
+          title: Text("My Property Ads".tr),
           backgroundColor: const Color.fromRGBO(96, 15, 116, 1),
         ),
         body: Obx(() {

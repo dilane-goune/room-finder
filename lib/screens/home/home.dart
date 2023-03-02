@@ -9,6 +9,8 @@ import 'package:room_finder/controllers/app_controller.dart';
 import 'package:room_finder/controllers/notification_controller.dart';
 import 'package:room_finder/classes/home_screen_supportable.dart';
 import 'package:room_finder/controllers/loadinding_controller.dart';
+import 'package:room_finder/functions/check_for_update.dart';
+import 'package:room_finder/functions/dialogs_bottom_sheets.dart';
 import 'package:room_finder/functions/dynamic_link_handler.dart';
 import 'package:room_finder/functions/snackbar_toast.dart';
 import 'package:room_finder/screens/home/account_tab.dart';
@@ -22,6 +24,7 @@ class HomeController extends LoadingController {
   int _popClickCounts = 0;
 
   Future<void> _runStartFutures() async {
+    await _promptUpdate();
     await NotificationController.requestNotificationPermission(Get.context);
   }
 
@@ -34,6 +37,21 @@ class HomeController extends LoadingController {
       _popClickCounts = 0;
     });
     return false;
+  }
+
+  Future<void> _promptUpdate() async {
+    final context = Get.context;
+    if (context == null) return;
+
+    final updateIsAvailable = await checkForAppUpdate();
+
+    if (!updateIsAvailable) return;
+
+    final shouldUpdate = await showConfirmDialog(
+      "An update is available. Do you want to download the update?",
+    );
+
+    if (shouldUpdate == true) downloadAppUpdate();
   }
 
   @override

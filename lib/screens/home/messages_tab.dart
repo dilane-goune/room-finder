@@ -6,6 +6,7 @@ import 'package:room_finder/classes/chat_conversation.dart';
 import 'package:room_finder/classes/home_screen_supportable.dart';
 import 'package:room_finder/controllers/app_controller.dart';
 import 'package:room_finder/controllers/loadinding_controller.dart';
+import 'package:room_finder/functions/dialogs_bottom_sheets.dart';
 import 'package:room_finder/screens/messages/chat.dart';
 import 'package:room_finder/screens/messages/view_notifications.dart';
 // import 'package:room_finder/controllers/loadinding_controller.dart';
@@ -57,6 +58,18 @@ class MessagesTab extends StatelessWidget implements HomeScreenSupportable {
             title: Text(conv.friend.fullName),
             subtitle:
                 conv.messages.isEmpty ? null : Text(conv.messages.last.content),
+            trailing: IconButton(
+              onPressed: () async {
+                final shoulDelete =
+                    await showConfirmDialog("Do you really want to delete?");
+
+                if (shoulDelete == true) {
+                  await ChatConversation.removeSavedChat(conv.key);
+                  controller._getNotifications();
+                }
+              },
+              icon: const Icon(Icons.delete),
+            ),
           );
         },
         itemCount: controller.conversations.length,

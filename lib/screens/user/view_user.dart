@@ -11,6 +11,18 @@ class ViewUser extends StatelessWidget {
   const ViewUser({super.key, required this.user});
   final User user;
 
+  void _viewImage(String source) {
+    showModalBottomSheet(
+      context: Get.context!,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Image.network(source),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,20 +41,23 @@ class ViewUser extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  user.profilePicture,
-                  // height: MediaQuery.of(context).size.width * 0.8,
-                  errorBuilder: (ctx, e, trace) {
-                    Get.log('$trace');
-                    return const Card(
-                      child: SizedBox(
-                        height: 200,
-                        child: Icon(Icons.person, size: 100),
-                      ),
-                    );
-                  },
+              GestureDetector(
+                onTap: () => _viewImage(user.profilePicture),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.network(
+                    user.profilePicture,
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    errorBuilder: (ctx, e, trace) {
+                      Get.log('$trace');
+                      return const Card(
+                        child: SizedBox(
+                          height: 200,
+                          child: Icon(Icons.person, size: 100),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

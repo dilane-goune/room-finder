@@ -39,6 +39,8 @@ class _ViewPdfScreenState extends State<ViewPdfScreen> {
       body: PdfView(
         controller: _controller,
         scrollDirection: Axis.vertical,
+        pageSnapping: false,
+        loaderSwitchDuration: const Duration(seconds: 0),
       ),
     );
   }

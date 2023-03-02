@@ -35,10 +35,6 @@ class ChatConversation {
   void newMessageFromContent(String content, bool byMe) {
     final msg = Message.fomNow(content: content, sender: byMe ? me : friend);
 
-    newMessage(msg);
-  }
-
-  void newMessage(Message msg) {
     if (!messages.contains(msg)) {
       messages.add(msg);
       saveChat();
@@ -46,19 +42,29 @@ class ChatConversation {
     }
   }
 
+  // void newMessage(Message msg) {
+  //   if (!messages.contains(msg)) {
+  //     messages.add(msg);
+  //     saveChat();
+  //     addUserConversationKeyToStorage(key);
+  //   }
+  // }
+
   static String createConvsertionKey(String myId, String frienId) {
     return "$conversationsKey$myId#$frienId";
   }
 
-  Future<void> updateProfilePictures() async {
-    final mypp = await ApiService.getUserProfilePictue(me.id);
-    if (mypp != null) {
-      me.profilePicture = mypp;
+  Future<void> updateChatInfo() async {
+    final myInfo = await ApiService.getUserInfo(me.id);
+    if (myInfo != null) {
+      me.profilePicture = '${myInfo["profilePicture"]}';
+      me.fcmToken = '${myInfo["fcmToken"]}';
     }
 
-    final friendPP = await ApiService.getUserProfilePictue(friend.id);
-    if (friendPP != null) {
-      friend.profilePicture = friendPP;
+    final friendInfo = await ApiService.getUserInfo(friend.id);
+    if (friendInfo != null) {
+      friend.profilePicture = '${friendInfo["profilePicture"]}';
+      friend.fcmToken = '${friendInfo["fcmToken"]}';
     }
   }
 
@@ -80,6 +86,17 @@ class ChatConversation {
     } catch (e) {
       Get.log("e");
       return null;
+    }
+  }
+
+  static Future<bool?> removeSavedChat(String key) async {
+    try {
+      final pref = await SharedPreferences.getInstance();
+      pref.remove(key);
+      return true;
+    } catch (e) {
+      Get.log("e");
+      return false;
     }
   }
 
